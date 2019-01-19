@@ -3,6 +3,9 @@ package filetest.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
@@ -13,14 +16,33 @@ public class HelperActions {
   public HelperActions(WebDriver wd) {
     this.wd = wd;
   }
+  //WebDriverWait wait = new WebDriverWait(wd, 10);
 
   // Клик по элементу
   protected void click(By locator) throws InterruptedException {
-    if (isElementPresent(locator) &&  ! wd.findElement(locator).isDisplayed()){
+   /* if (isElementPresent(locator) &&  ! wd.findElement(locator).isDisplayed()){
       return;
-    }
+    }*/
+    wait_to_be_clickable(locator);
     wd.findElement(locator).click();
+    //wait_loading_wheel();
+  }
 
+  // Явное ожидание кликабельности элемента
+  protected void wait_to_be_clickable(By locator) {
+    WebDriverWait wait = new WebDriverWait(wd, 10);
+    wait.until(ExpectedConditions.elementToBeClickable(locator));
+  }
+  // Явное ожидание видимости элемента
+  protected void wait_until_not_visible(By locator) {
+    WebDriverWait wait = new WebDriverWait(wd, 10);
+    wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+  }
+
+  // Явное ожидание завершения колеса загрузки (исключительно в рамках проекта КСЭД)
+  protected void wait_loading_wheel() {
+    WebDriverWait wait = new WebDriverWait(wd, 10);
+    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(Locator.loading_wheel)));
   }
 
   // Ввод текста в поле ввода (просто вводится текст, но не нажимается кнопка RETURN/ENTER)
@@ -29,6 +51,7 @@ public class HelperActions {
     if (text != null) {
       String existingText = wd.findElement(locator).getAttribute("value");
       if (!text.equals(existingText)) {
+        wait_to_be_clickable(locator);
         wd.findElement(locator).clear();
         wd.findElement(locator).sendKeys(text);
       }
@@ -42,7 +65,7 @@ public class HelperActions {
   }
 
   // Проверка, что элемент присутствует на странице
-  public boolean isElementPresent(By locator) {
+  protected boolean isElementPresent(By locator) {
     try {
       wd.findElement(locator);
       return true;

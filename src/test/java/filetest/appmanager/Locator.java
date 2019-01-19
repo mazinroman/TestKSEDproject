@@ -2,6 +2,9 @@ package filetest.appmanager;
 
 public class Locator {
 
+  // Колесо загрузки
+  public static String loading_wheel = "//div[@id='confirm-edit-fields-form-container_mask']"; // xpath
+
   // Форма авторизации
   public static String username_text = "username"; // name
   public static String password_text = "password"; // name
