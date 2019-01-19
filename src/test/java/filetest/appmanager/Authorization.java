@@ -7,12 +7,13 @@
 package filetest.appmanager;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
 public class Authorization extends HelperActions{
 
-  public Authorization(ChromeDriver wd) {
+  public Authorization(WebDriver wd) {
     super(wd);
   }
 

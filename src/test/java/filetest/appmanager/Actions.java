@@ -1,6 +1,7 @@
 package filetest.appmanager;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
@@ -8,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Actions extends HelperActions {
 
-  public Actions(ChromeDriver wd) {
+  public Actions(WebDriver wd) {
     super(wd); //Обращение к конструктору базового класса "HelperActions"
   }
 
