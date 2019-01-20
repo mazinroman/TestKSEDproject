@@ -4,6 +4,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
@@ -98,6 +100,16 @@ public class HelperActions {
     }
   }
 
+  // Получение текста элементов из списка
+  public List<String> getTextElements(By locator){
+    List<String> listElement = new ArrayList<>();
+    List<WebElement> elements = wd.findElements(locator);
+    for(WebElement element : elements){
+      String text = element.getText();
+      listElement.add(text);
+    }
+    return listElement;
+  }
   // Получение количества элементов (неявные ожидания лучше отключить, иначе будет происходить ожидание)
   protected int getElementCount(By locator){
     return wd.findElements(locator).size();
