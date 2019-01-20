@@ -289,6 +289,12 @@ public class Locator {
   public static String text_poruch = "prop_lecm-errands_content"; // name //Текст поручения
   public static String otvetstv_ispoln = "//input[contains(@id, 'executor-assoc-autocomplete')]";//xpath // Ответственный исполнитель
 
+  // Метод возвращает локатор выбранного документа переданного в параметре
+  public static String typeDoc(String doc) {
+    String document = "//a[contains(@class, 'hassubmenu')][contains(text(), "+"'" +doc+ "'"+")]";
+    return document;
+  }
+
   // ПАКЕТ ВХОДЯЩЕЙ КОРРЕСПОНДЕНЦИИ
 
   // ВХОДЯЩИЙ ДОКУМЕНТ

@@ -25,6 +25,7 @@ public class HelperActions {
       return;
     }*/
     wait_to_be_clickable(locator);
+    scroll_to_element(locator);
     wd.findElement(locator).click();
     //wait_loading_wheel();
   }
@@ -51,7 +52,7 @@ public class HelperActions {
   protected void wait_page_loaded() throws InterruptedException {
 
 
-    TimeUnit.SECONDS.sleep(2);
+    TimeUnit.SECONDS.sleep(3);
 
     boolean page_loaded = false;
 
@@ -73,22 +74,36 @@ public class HelperActions {
 
   // Ввод текста в поле ввода (просто вводится текст, но не нажимается кнопка RETURN/ENTER)
   protected void inputText(By locator, String text) throws InterruptedException {
-    //  TimeUnit.SECONDS.sleep(1);
     if (text != null) {
       String existingText = wd.findElement(locator).getAttribute("value");
       if (!text.equals(existingText)) {
         wait_to_be_clickable(locator);
         wd.findElement(locator).clear();
         wd.findElement(locator).sendKeys(text);
+
+/*        if (!text.equals(existingText)) {
+          wd.findElement(locator).clear();
+          wd.findElement(locator).sendKeys(text);
+          TimeUnit.MILLISECONDS.sleep(5);
+        }*/
       }
     }
   }
 
+  protected void sendKeys(By locator, String keys) throws InterruptedException {
+    wait_to_be_clickable(locator);
+    wait_until_not_visible(locator);
+    wd.findElement(locator).click();
+    wd.findElement(locator).clear();
+    wd.findElement(locator).sendKeys(keys);
+    TimeUnit.MILLISECONDS.sleep(4);
+  }
+
   // Нажатие кнопки RETURN в поле ввода, чтобы введенное значение зафиксировалось
   protected void enter(By locator) throws InterruptedException {
-    wd.findElement(locator).sendKeys(Keys.RETURN);
-    TimeUnit.SECONDS.sleep(1);
-  }
+    //TimeUnit.SECONDS.sleep(1);
+    wd.findElement(locator).sendKeys(Keys.ENTER);
+    }
 
   // Проверка, что элемент присутствует на странице
   protected boolean isElementPresent(By locator) {

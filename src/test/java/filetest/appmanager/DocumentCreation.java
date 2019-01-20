@@ -1,32 +1,28 @@
+/*
+Здесь был метод авторизации, но я его перенес в класс Action и теперь вызов этого метода происходит из Action.
+Ссылки на класс Authorization не удалял, далее можно будет просто переименовать этот класс и создать в нем
+другие методы.
+ */
+
 package filetest.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
 import java.util.concurrent.TimeUnit;
 
-import static filetest.appmanager.Locator.typeDoc;
+public class DocumentCreation extends HelperActions{
 
-public class Actions extends HelperActions {
-
-  public Actions(WebDriver wd) {
-    super(wd); //Обращение к конструктору базового класса "HelperActions"
+  public DocumentCreation(WebDriver wd) {
+    super(wd);
   }
 
-
-/*  Нажатие на кнопку "Создать" и выбор создаваемого документа
-  (наименование документа передается в параметре*/
-  public void menuCreate(String doc) throws InterruptedException {
-    click(By.xpath(Locator.newDoc_button));
-    click(By.xpath(typeDoc(doc)));
-
-  }
-
-/*  public void documentCreation() throws InterruptedException {
+  /*Создание нового документа (заполнение атрибутов в открытой форме
+  создания(открывается в методе menuCreate) и завершение создания нажатием кнопки "Создать".
+  ***ПОРУЧЕНИЕ***/
+  public void documentCreation() throws InterruptedException {
     // Тип поручения
     sendKeys(By.xpath(Locator.doc_typeInp), "На рассмотрение"+ Keys.ENTER);
     TimeUnit.SECONDS.sleep(2);
@@ -48,6 +44,5 @@ public class Actions extends HelperActions {
     //TimeUnit.SECONDS.sleep(3);
     wait_page_loaded();
     Assert.assertEquals(wd.getTitle(), "Документ");
-  }*/
-
+  }
 }

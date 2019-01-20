@@ -7,9 +7,9 @@ public class Firsttest extends Base{
   @Test
   //@Test(enabled = false) - параметр для того, чтобы тест не запускался
   public void startTest() throws InterruptedException {
-    app.getAuthorization().login("StroganovSN", "12345");
-    app.getActions().menuCreate();
-    app.getActions().documentCreation();
+    app.getLoginLogout().login("StroganovSN", "12345");
+    app.getActions().menuCreate("Поручение");
+    app.getDocCreat().documentCreation();
 
   }
 

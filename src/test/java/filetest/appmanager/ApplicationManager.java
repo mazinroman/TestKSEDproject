@@ -14,6 +14,7 @@ public class ApplicationManager {
 
   private Actions actions;
   private LoginLogout LoginLogout;
+  private DocumentCreation DocumentCreation;
   private String browser;
 
   public ApplicationManager(String browser) {
@@ -34,17 +35,21 @@ public class ApplicationManager {
 
     LoginLogout = new LoginLogout(wd);
     actions = new Actions(wd);
+    DocumentCreation = new DocumentCreation(wd);
   }
 
   public void stop() {
     wd.quit();
   }
 
-  public LoginLogout getAuthorization() {
+  public LoginLogout getLoginLogout() {
     return LoginLogout;
   }
 
   public Actions getActions() {
     return actions;
+  }
+  public DocumentCreation getDocCreat() {
+    return DocumentCreation;
   }
 }
