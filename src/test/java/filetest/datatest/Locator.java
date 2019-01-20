@@ -1,4 +1,4 @@
-package filetest.appmanager;
+package filetest.datatest;
 
 public class Locator {
 
@@ -291,7 +291,8 @@ public class Locator {
 
   // Метод возвращает локатор выбранного документа переданного в параметре
   public static String typeDoc(String doc) {
-    String document = "//a[contains(@class, 'hassubmenu')][contains(text(), "+"'" +doc+ "'"+")]";
+    //String document = "//a[contains(@class, 'hassubmenu')][contains(text(), "+"'" +doc+ "'"+")]";
+    String document = String.format("//a[contains(@class, 'hassubmenu')][contains(text(), '%s')]",doc);
     return document;
   }
 

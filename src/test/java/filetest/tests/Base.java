@@ -2,19 +2,18 @@ package filetest.tests;
 
 import filetest.appmanager.ApplicationManager;
 import org.openqa.selenium.remote.BrowserType;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.*;
 
 public class Base {
 
-  protected static final ApplicationManager app = new ApplicationManager(BrowserType.CHROME);
+  protected static final ApplicationManager app = new ApplicationManager(BrowserType.CHROME); //Выбор браузера
 
-  @BeforeSuite
+  @BeforeMethod
   public void setUp() {
     app.init();
   }
 
-  @AfterSuite
+  @AfterMethod
   public void tearDown() {
     app.stop();
   }

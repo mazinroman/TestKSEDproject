@@ -1,5 +1,6 @@
 package filetest.appmanager;
 
+import filetest.datatest.Locator;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -48,22 +49,6 @@ public class HelperActions {
     wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(Locator.loading_wheel)));
   }
 
-  // Ожидание загрузки страницы
-  protected void wait_page_loaded() throws InterruptedException {
-
-
-    TimeUnit.SECONDS.sleep(3);
-
-    boolean page_loaded = false;
-
-    while (!page_loaded) {
-
-      page_loaded = js.executeScript("return document.readyState").equals("complete");
-
-      TimeUnit.MILLISECONDS.sleep(1);
-    }
-  }
-
   // Скрол до элемента
   protected void scroll_to_element(By locator){
 
@@ -89,14 +74,14 @@ public class HelperActions {
       }
     }
   }
-
+  // Ввод значения
   protected void sendKeys(By locator, String keys) throws InterruptedException {
     wait_to_be_clickable(locator);
     wait_until_not_visible(locator);
     wd.findElement(locator).click();
     wd.findElement(locator).clear();
     wd.findElement(locator).sendKeys(keys);
-    TimeUnit.MILLISECONDS.sleep(4);
+    TimeUnit.MILLISECONDS.sleep(5);
   }
 
   // Нажатие кнопки RETURN в поле ввода, чтобы введенное значение зафиксировалось
@@ -129,9 +114,44 @@ public class HelperActions {
   protected int getElementCount(By locator){
     return wd.findElements(locator).size();
   }
+
   // Получение элемента из списка по индексу
   protected WebElement selectAnItemFromTheList(By locator, int index){
     WebElement element = wd.findElements(locator).get(index);
     return element;
+  }
+
+  // Ожидание загрузки страницы
+  protected void wait_page_loaded() throws InterruptedException {
+    TimeUnit.SECONDS.sleep(2);
+    try
+    {
+
+      //Initially bellow given if condition will check ready state of page.
+	     /* if (js.executeScript("return document.readyState").toString().equals("complete"))
+	      {
+	         System.out.println("Page Is loaded.");
+	       return;
+	      } */
+
+      //This loop will rotate for 25 times to check If page Is ready after every 1 second.
+      //You can replace your value with 25 If you wants to Increase or decrease wait time.
+      for (int i=0; i<25; i++)
+      {
+        Thread.sleep(1000);
+        //System.out.println("Page Ready values="+i);
+        if (js.executeScript("return document.readyState").toString().equals("complete"))
+        {
+          //System.out.println("Page Ready values with Condition="+i);
+          break;
+        }
+      }
+    }
+    catch (InterruptedException e) {
+
+      //System.out.println("Page Is loaded");
+    }
+    //To check page ready state.
+
   }
 }

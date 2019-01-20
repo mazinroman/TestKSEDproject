@@ -6,9 +6,9 @@
 
 package filetest.appmanager;
 
+import filetest.datatest.Locator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
 public class LoginLogout extends HelperActions{
@@ -25,5 +25,14 @@ public class LoginLogout extends HelperActions{
 
     wait_page_loaded();
     Assert.assertEquals(wd.getTitle(), "АРМ");
+  }
+
+  // Выход из системы (раскрытие меню пользователя, нажатие на действие "Выход")
+  public void logout() throws InterruptedException {
+    click(By.id(Locator.user_menu));
+    click(By.id(Locator.USER_LOGOUT));
+
+    wait_page_loaded();
+    Assert.assertEquals(wd.getTitle(), "Войти");
   }
 }

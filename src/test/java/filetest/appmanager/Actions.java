@@ -1,15 +1,10 @@
 package filetest.appmanager;
 
+import filetest.datatest.Locator;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
 
-import java.util.concurrent.TimeUnit;
-
-import static filetest.appmanager.Locator.typeDoc;
+import static filetest.datatest.Locator.typeDoc;
 
 public class Actions extends HelperActions {
 
@@ -23,7 +18,7 @@ public class Actions extends HelperActions {
   public void menuCreate(String doc) throws InterruptedException {
     click(By.xpath(Locator.newDoc_button));
     click(By.xpath(typeDoc(doc)));
-
+    wait_page_loaded();
   }
 
 /*  public void documentCreation() throws InterruptedException {

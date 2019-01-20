@@ -6,6 +6,7 @@
 
 package filetest.appmanager;
 
+import filetest.datatest.Locator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -26,10 +27,8 @@ public class DocumentCreation extends HelperActions{
     // Тип поручения
     sendKeys(By.xpath(Locator.doc_typeInp), "На рассмотрение"+ Keys.ENTER);
     TimeUnit.SECONDS.sleep(2);
-    //enter(By.xpath(Locator.doc_typeInp));
     // Категория документа
     sendKeys(By.xpath(Locator.category_doc), "Открытый"+Keys.ENTER);
-    //enter(By.xpath(Locator.category_doc));
 
     // Ответственный исполнитель
     wd.findElement(By.xpath(Locator.otvetstv_ispoln)).sendKeys("Строганов" + Keys.ENTER);
