@@ -11,9 +11,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
-public class Authorization extends HelperActions{
+public class LoginLogout extends HelperActions{
 
-  public Authorization(WebDriver wd) {
+  public LoginLogout(WebDriver wd) {
     super(wd);
   }
 
@@ -23,6 +23,7 @@ public class Authorization extends HelperActions{
     inputText(By.name(Locator.password_text), password);
     enter(By.name(Locator.password_text));
 
+    wait_page_loaded();
     Assert.assertEquals(wd.getTitle(), "АРМ");
   }
 }

@@ -1,9 +1,6 @@
 package filetest.appmanager;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -12,9 +9,11 @@ import java.util.concurrent.TimeUnit;
 
 public class HelperActions {
   protected WebDriver wd;
+  public JavascriptExecutor js;
 
   public HelperActions(WebDriver wd) {
     this.wd = wd;
+    this.js = (JavascriptExecutor) wd;
   }
   //WebDriverWait wait = new WebDriverWait(wd, 10);
 
@@ -33,6 +32,7 @@ public class HelperActions {
     WebDriverWait wait = new WebDriverWait(wd, 10);
     wait.until(ExpectedConditions.elementToBeClickable(locator));
   }
+
   // Явное ожидание видимости элемента
   protected void wait_until_not_visible(By locator) {
     WebDriverWait wait = new WebDriverWait(wd, 10);
@@ -42,7 +42,31 @@ public class HelperActions {
   // Явное ожидание завершения колеса загрузки (исключительно в рамках проекта КСЭД)
   protected void wait_loading_wheel() {
     WebDriverWait wait = new WebDriverWait(wd, 10);
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(Locator.loading_wheel)));
+    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(Locator.loading_wheel)));
+  }
+
+  // Ожидание загрузки страницы
+  protected void wait_page_loaded() throws InterruptedException {
+
+
+    TimeUnit.SECONDS.sleep(2);
+
+    boolean page_loaded = false;
+
+    while (!page_loaded) {
+
+      page_loaded = js.executeScript("return document.readyState").equals("complete");
+
+      TimeUnit.MILLISECONDS.sleep(1);
+    }
+  }
+
+  // Скрол до элемента
+  protected void scroll_to_element(By locator){
+
+    WebElement element = wd.findElement(locator);
+    js.executeScript("arguments[0].scrollIntoView(true);", element);
+
   }
 
   // Ввод текста в поле ввода (просто вводится текст, но не нажимается кнопка RETURN/ENTER)
@@ -69,8 +93,13 @@ public class HelperActions {
     try {
       wd.findElement(locator);
       return true;
-    } catch (NoSuchElementException ex) {
+    } catch (NoSuchElementException e) {
       return false;
     }
+  }
+
+  // Получение количества элементов (неявные ожидания лучше отключить, иначе будет происходить ожидание)
+  protected int getElementCount(By locator){
+    return wd.findElements(locator).size();
   }
 }

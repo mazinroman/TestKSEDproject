@@ -13,7 +13,7 @@ public class ApplicationManager {
   WebDriver wd;
 
   private Actions actions;
-  private Authorization authorization;
+  private LoginLogout LoginLogout;
   private String browser;
 
   public ApplicationManager(String browser) {
@@ -31,7 +31,8 @@ public class ApplicationManager {
     wd.manage().window().maximize();
     wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     wd.get(DataTest.url);
-    authorization = new Authorization(wd);
+
+    LoginLogout = new LoginLogout(wd);
     actions = new Actions(wd);
   }
 
@@ -39,8 +40,8 @@ public class ApplicationManager {
     wd.quit();
   }
 
-  public Authorization getAuthorization() {
-    return authorization;
+  public LoginLogout getAuthorization() {
+    return LoginLogout;
   }
 
   public Actions getActions() {

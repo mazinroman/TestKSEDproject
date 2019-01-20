@@ -19,6 +19,7 @@ public class Actions extends HelperActions {
     inputText(By.name(Locator.password_text), password);
     enter(By.name(Locator.password_text));
 
+    wait_page_loaded();
     Assert.assertEquals(wd.getTitle(), "АРМ");
   }
 
@@ -41,8 +42,10 @@ public class Actions extends HelperActions {
     enter(By.xpath(Locator.otvetstv_ispoln));
 
     // Кнопка "Создать" завершение создания
+    scroll_to_element(By.xpath(Locator.btnCreateDoc));
     click(By.xpath(Locator.btnCreateDoc));
-    TimeUnit.SECONDS.sleep(3);
+    //TimeUnit.SECONDS.sleep(3);
+    wait_page_loaded();
     Assert.assertEquals(wd.getTitle(), "Документ");
   }
 
