@@ -102,4 +102,9 @@ public class HelperActions {
   protected int getElementCount(By locator){
     return wd.findElements(locator).size();
   }
+  // Получение элемента из списка по индексу
+  protected WebElement selectAnItemFromTheList(By locator, int index){
+    WebElement element = wd.findElements(locator).get(index);
+    return element;
+  }
 }
