@@ -6,7 +6,7 @@ import org.testng.annotations.*;
 
 public class Base {
 
-  protected static final ApplicationManager app = new ApplicationManager(BrowserType.CHROME); //Выбор браузера
+  protected static final ApplicationManager app = new ApplicationManager(BrowserType.FIREFOX); //Выбор браузера
 
   @BeforeMethod
   public void setUp() {

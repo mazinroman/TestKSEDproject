@@ -7,6 +7,7 @@
 package filetest.appmanager;
 
 import filetest.datatest.Locator;
+import okio.Timeout;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -31,17 +32,11 @@ public class DocumentCreation extends HelperActions{
     sendKeys(By.xpath(Locator.category_doc), "Открытый"+Keys.ENTER);
 
     // Ответственный исполнитель
-    wd.findElement(By.xpath(Locator.otvetstv_ispoln)).sendKeys("Строганов" + Keys.ENTER);
-    //sendKeys(By.xpath(Locator.otvetstv_ispoln), "Строганов"+Keys.ENTER);
-    //enter(By.xpath(Locator.otvetstv_ispoln));
+    sendKeys(By.xpath(Locator.otvetstv_ispoln),"Строганов" + Keys.ENTER);
 
     // Кнопка "Создать" завершение создания
-    scroll_to_element(By.xpath(Locator.btnCreateDoc));
-    TimeUnit.SECONDS.sleep(2);
-    wd.findElement(By.xpath(Locator.btnCreateDoc)).click();
-    //click(By.xpath(Locator.btnCreateDoc));
-    //TimeUnit.SECONDS.sleep(3);
-    wait_page_loaded();
+    click(By.xpath(Locator.btnCreateDoc));
+    wait_page_loaded(By.xpath(Locator.btnCreateDoc));
     Assert.assertEquals(wd.getTitle(), "Документ");
   }
 }

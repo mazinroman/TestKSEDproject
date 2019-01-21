@@ -8,6 +8,7 @@ package filetest.appmanager;
 
 import filetest.datatest.Locator;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
@@ -19,11 +20,11 @@ public class LoginLogout extends HelperActions{
 
   // Авторизация (ввод логина и пароля, нажатие кнопки "Войти"
   public void login(String login, String password) throws InterruptedException {
-    inputText(By.name(Locator.username_text),login);
-    inputText(By.name(Locator.password_text), password);
-    enter(By.name(Locator.password_text));
+    sendKeys(By.name(Locator.username_text), login);
+    sendKeys(By.name(Locator.password_text), password + Keys.RETURN);
+    //enter(By.name(Locator.password_text));
 
-    wait_page_loaded();
+    wait_page_loaded(null);
     Assert.assertEquals(wd.getTitle(), "АРМ");
   }
 
@@ -32,7 +33,7 @@ public class LoginLogout extends HelperActions{
     click(By.id(Locator.user_menu));
     click(By.id(Locator.USER_LOGOUT));
 
-    wait_page_loaded();
+    wait_page_loaded(null);
     Assert.assertEquals(wd.getTitle(), "Войти");
   }
 }

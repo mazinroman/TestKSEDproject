@@ -4,6 +4,7 @@ import filetest.datatest.Locator;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.interactions.Actions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,88 +13,67 @@ import java.util.concurrent.TimeUnit;
 
 public class HelperActions {
   protected WebDriver wd;
-  public JavascriptExecutor js;
+  protected JavascriptExecutor js;
+  protected Actions action;
 
   public HelperActions(WebDriver wd) {
     this.wd = wd;
     this.js = (JavascriptExecutor) wd;
+    action = new Actions(this.wd);
+  }
+
+  protected WebElement element(By locator) {
+    WebElement element = wd.findElement(locator);
+    return element;
+  }
+
+  protected WebDriverWait wait(int seconds) {
+    WebDriverWait wait = new WebDriverWait(wd, seconds);
+    return wait;
   }
   //WebDriverWait wait = new WebDriverWait(wd, 10);
-
+//**************************************************************************
   // Клик по элементу
   protected void click(By locator) throws InterruptedException {
    /* if (isElementPresent(locator) &&  ! wd.findElement(locator).isDisplayed()){
       return;
     }*/
     wait_to_be_clickable(locator);
-    scroll_to_element(locator);
-    wd.findElement(locator).click();
-    //wait_loading_wheel();
+    wait_until_not_visible(locator);
+    action.moveToElement(element(locator)).pause(5).click().perform();
   }
 
   // Явное ожидание кликабельности элемента
   protected void wait_to_be_clickable(By locator) {
-    WebDriverWait wait = new WebDriverWait(wd, 10);
-    wait.until(ExpectedConditions.elementToBeClickable(locator));
+    wait(5).until(ExpectedConditions.elementToBeClickable(locator));
   }
 
   // Явное ожидание видимости элемента
   protected void wait_until_not_visible(By locator) {
-    WebDriverWait wait = new WebDriverWait(wd, 10);
-    wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    wait(5).until(ExpectedConditions.visibilityOfElementLocated(locator));
   }
 
   // Явное ожидание завершения колеса загрузки (исключительно в рамках проекта КСЭД)
   protected void wait_loading_wheel() {
-    WebDriverWait wait = new WebDriverWait(wd, 10);
-    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(Locator.loading_wheel)));
+    wait(5).until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(Locator.loading_wheel)));
   }
 
   // Скрол до элемента
   protected void scroll_to_element(By locator){
-
-    WebElement element = wd.findElement(locator);
-    js.executeScript("arguments[0].scrollIntoView(true);", element);
-
+    //js.executeScript("arguments[0].scrollIntoView(true);", element(locator));
+    action.moveToElement(element(locator)).perform();
   }
 
-  // Ввод текста в поле ввода (просто вводится текст, но не нажимается кнопка RETURN/ENTER)
-  protected void inputText(By locator, String text) throws InterruptedException {
-    if (text != null) {
-      String existingText = wd.findElement(locator).getAttribute("value");
-      if (!text.equals(existingText)) {
-        wait_to_be_clickable(locator);
-        wd.findElement(locator).clear();
-        wd.findElement(locator).sendKeys(text);
-
-/*        if (!text.equals(existingText)) {
-          wd.findElement(locator).clear();
-          wd.findElement(locator).sendKeys(text);
-          TimeUnit.MILLISECONDS.sleep(5);
-        }*/
-      }
-    }
-  }
   // Ввод значения
   protected void sendKeys(By locator, String keys) throws InterruptedException {
     wait_to_be_clickable(locator);
-    wait_until_not_visible(locator);
-    wd.findElement(locator).click();
-    wd.findElement(locator).clear();
-    wd.findElement(locator).sendKeys(keys);
-    TimeUnit.MILLISECONDS.sleep(5);
+    action.moveToElement(element(locator)).sendKeys(element(locator), keys).perform();
   }
-
-  // Нажатие кнопки RETURN в поле ввода, чтобы введенное значение зафиксировалось
-  protected void enter(By locator) throws InterruptedException {
-    //TimeUnit.SECONDS.sleep(1);
-    wd.findElement(locator).sendKeys(Keys.ENTER);
-    }
 
   // Проверка, что элемент присутствует на странице
   protected boolean isElementPresent(By locator) {
     try {
-      wd.findElement(locator);
+      element(locator);
       return true;
     } catch (NoSuchElementException e) {
       return false;
@@ -122,7 +102,10 @@ public class HelperActions {
   }
 
   // Ожидание загрузки страницы
-  protected void wait_page_loaded() throws InterruptedException {
+  protected void wait_page_loaded(By locator) throws InterruptedException {
+    if (locator != null){
+      wait(5).until(ExpectedConditions.stalenessOf(element(locator)));
+    }
     TimeUnit.SECONDS.sleep(2);
     try
     {
@@ -134,9 +117,9 @@ public class HelperActions {
 	       return;
 	      } */
 
-      //This loop will rotate for 25 times to check If page Is ready after every 1 second.
-      //You can replace your value with 25 If you wants to Increase or decrease wait time.
-      for (int i=0; i<25; i++)
+      //Этот цикл будет проходить 25 раз, и проверять через каждую 1 секунду, готова ли страница.
+      //Чтобы увеличить или уменьшить время ожидания, неоюходимо изменить значение переменной "i".
+      for (int i=0; i<15; i++)
       {
         Thread.sleep(1000);
         //System.out.println("Page Ready values="+i);
